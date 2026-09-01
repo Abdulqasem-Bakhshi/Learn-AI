@@ -29,6 +29,12 @@ def chat():
 
     prompt = data["message"]
 
+    # Get thinking mode from the frontend.
+    # Default to False if it isn't provided.
+    enable_thinking = data.get("enable_thinking", False)
+
+    print("Thinking:", enable_thinking)
+
     messages = [
         {
             "role": "user",
@@ -42,7 +48,7 @@ def chat():
         tokenize=True,
         return_dict=True,
         return_tensors="pt",
-        enable_thinking=False,
+        enable_thinking=enable_thinking,
     ).to(model.device)
 
     outputs = model.generate(
@@ -58,7 +64,6 @@ def chat():
     return jsonify({
         "response": response
     })
-
 
 if __name__ == "__main__":
     app.run(debug=True)
