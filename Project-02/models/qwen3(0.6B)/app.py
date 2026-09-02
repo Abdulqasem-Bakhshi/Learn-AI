@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder="../../templates",
+    static_folder="../../static"
+)
 
 MODEL_NAME = "Qwen/Qwen3-0.6B"
 
@@ -18,9 +22,14 @@ model = AutoModelForCausalLM.from_pretrained(
 print("Qwen3 is ready.")
 
 
+MODEL_DISPLAY_NAME = "Qwen3-0.6B"
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        model_name=MODEL_DISPLAY_NAME
+    )
 
 
 @app.route("/chat", methods=["POST"])
@@ -53,8 +62,14 @@ def chat():
 
     outputs = model.generate(
         **inputs,
-        max_new_tokens=200,
+        max_new_tokens=5000,
     )
+
+    # Calculate the number of generated tokens & print the input, generated, and total tokens.
+    generated_tokens = outputs.shape[-1] - inputs["input_ids"].shape[-1]
+    print("Input tokens:", inputs["input_ids"].shape[-1])
+    print("Generated tokens:", generated_tokens)
+    print("Total tokens:", outputs.shape[-1])
 
     response = tokenizer.decode(
         outputs[0][inputs["input_ids"].shape[-1]:],
@@ -66,4 +81,4 @@ def chat():
     })
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

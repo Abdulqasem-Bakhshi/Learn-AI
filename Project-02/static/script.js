@@ -4,6 +4,17 @@ const messages = document.getElementById("messages");
 const sendButton = document.getElementById("send-button");
 const thinkingButton = document.getElementById("thinking-button");
 
+let enableThinking = false;
+
+// Enable/disable Send button depending on input
+function updateSendButton() {
+  sendButton.disabled = promptInput.value.trim() === "";
+}
+
+promptInput.addEventListener("input", updateSendButton);
+
+updateSendButton();
+
 function addMessage(sender, text, type) {
   const message = document.createElement("div");
   message.className = `message ${type}`;
@@ -30,6 +41,7 @@ form.addEventListener("submit", async (event) => {
 
   const prompt = promptInput.value.trim();
 
+  // Safety check
   if (!prompt) {
     return;
   }
@@ -37,6 +49,7 @@ form.addEventListener("submit", async (event) => {
   addMessage("You", prompt, "user");
 
   promptInput.value = "";
+
   sendButton.disabled = true;
   promptInput.disabled = true;
 
@@ -62,7 +75,7 @@ form.addEventListener("submit", async (event) => {
   } catch (error) {
     addMessage(
       "System",
-      "Sorry, something went wrong while contacting Qwen.",
+      "Sorry, something went wrong while contacting Qwen. Please ensure that Qwen is running.",
       "assistant",
     );
 
@@ -70,15 +83,15 @@ form.addEventListener("submit", async (event) => {
   } finally {
     sendButton.disabled = false;
     promptInput.disabled = false;
+
+    // Re-check input after the request
+    updateSendButton();
+
     promptInput.focus();
   }
 });
 
-// Focus the input when the page loads
-promptInput.focus();
-
-let enableThinking = false;
-
+// Thinking button
 thinkingButton.addEventListener("click", () => {
   enableThinking = !enableThinking;
 
@@ -90,3 +103,6 @@ thinkingButton.addEventListener("click", () => {
     ? "Thinking mode: On"
     : "Thinking mode: Off";
 });
+
+// Focus input when page loads
+promptInput.focus();

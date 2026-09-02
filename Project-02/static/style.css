@@ -249,3 +249,12 @@ button:disabled {
   background: #ccc;
   color: #000;
 }
+
+.send-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.send-button:disabled:hover {
+  background: #fff;
+}
