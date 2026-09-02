@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>My Local AI</title>
+
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+
+  <body>
+    <main class="app">
+      <header class="header">
+        <div>
+          <h1>My Local AI</h1>
+          <span>Qwen (Qwen3-0.6B)</span>
+          <span>By Abdulqasem Bakhshi</span>
+        </div>
+      </header>
+
+      <section class="chat">
+        <div id="messages" class="messages">
+          <div class="message assistant">
+            <div class="message-name">Qwen</div>
+            <div class="message-content">Hello. How can I help?</div>
+          </div>
+        </div>
+      </section>
+
+      <form id="chat-form" class="chat-form">
+        <form id="chat-form" class="chat-form">
+          <div class="input-container">
+            <input
+              id="prompt"
+              type="text"
+              placeholder="Message Qwen..."
+              autocomplete="off"
+            />
+
+            <button type="button" id="thinking-button">
+              <i data-lucide="brain"></i>
+            </button>
+
+            <button type="submit" id="send-button">
+              <i data-lucide="send"></i>
+            </button>
+          </div>
+        </form>
+      </form>
+    </main>
+
+    <script src="/static/script.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
